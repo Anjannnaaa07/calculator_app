@@ -1,0 +1,30 @@
+﻿<Window x:Class="calculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:calculator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="420">
+    <Grid>
+        <Grid HorizontalAlignment="Center" Height="392" Margin="0,19,0,0" VerticalAlignment="Top" Width="382">
+            <TextBox x:Name="TextRes" HorizontalAlignment="Left" Height="81" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="362"/>
+            <Button Content="1" HorizontalAlignment="Left" Height="56" Margin="10,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="2" HorizontalAlignment="Left" Height="56" Margin="101,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="3" HorizontalAlignment="Left" Height="56" Margin="193,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button x:Name="AddButton" Content="+" HorizontalAlignment="Left" Height="56" Margin="293,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="AddButton_Click"/>
+            <Button Content="4" HorizontalAlignment="Left" Height="56" Margin="10,185,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="7" HorizontalAlignment="Left" Height="56" Margin="10,255,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="0" HorizontalAlignment="Left" Height="56" Margin="10,326,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="5" HorizontalAlignment="Left" Height="56" Margin="101,185,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="8" HorizontalAlignment="Left" Height="56" Margin="101,255,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button x:Name="Clear" Content="CE" HorizontalAlignment="Left" Height="56" Margin="101,326,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Clear_Click"/>
+            <Button Content="6" HorizontalAlignment="Left" Height="56" Margin="193,185,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button Content="9" HorizontalAlignment="Left" Height="56" Margin="193,255,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button x:Name="EqualsTo" Content="=" HorizontalAlignment="Left" Height="56" Margin="193,326,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="EqualsTo_Click"/>
+            <Button x:Name="SubButton" Content="-" HorizontalAlignment="Left" Height="56" Margin="293,185,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="SubButton_Click"/>
+            <Button x:Name="MultiplyButton" Content="x" HorizontalAlignment="Left" Height="56" Margin="293,255,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="MultiplyButton_Click"/>
+            <Button x:Name="DivideButton" Content="/" HorizontalAlignment="Left" Height="56" Margin="293,326,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="DivideButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>
