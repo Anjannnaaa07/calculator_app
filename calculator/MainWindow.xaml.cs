@@ -10,9 +10,9 @@ namespace calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        string eqn = string.Empty;
-        IArithematicOperations operations;
-        Dictionary<char, Func<int, int, int>> operationMap;
+        private string eqn = string.Empty;
+        private readonly IArithematicOperations operations;
+        private Dictionary<char, Func<int, int, int>> operationMap;
 
         public MainWindow()
         {
