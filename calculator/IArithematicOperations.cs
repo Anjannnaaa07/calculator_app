@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace calculator
 {
-    public interface IArithematicOperations
+    public interface IArithematicOperations<T>
     {
-        int Add(int a, int b);
-        int Subtract(int a, int b);
-        int Multiply(int a, int b);
-        int Divide(int a, int b);
+        T Add(T a, T b);
+        T Subtract(T a, T b);
+        T Multiply(T a, T b);
+        T Divide(T a, T b);
     }
 }

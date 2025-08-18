@@ -5,30 +5,40 @@ using System.Windows.Controls;
 
 namespace calculator
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private string eqn = string.Empty;
-        private readonly IArithematicOperations operations;
-        private Dictionary<char, Func<int, int, int>> operationMap;
+
+        private readonly IArithematicOperations<int> intOps;
+        private readonly IArithematicOperations<decimal> decOps;
+
+        private Dictionary<char, Func<int, int, int>> intOperationMap;
+        private Dictionary<char, Func<decimal, decimal, decimal>> decOperationMap;
 
         public MainWindow()
         {
             InitializeComponent();
-            operations = new ArithmeticOperations();
+            intOps = new IntArithmeticOperations();
+            decOps = new DecimalArithmeticOperations();
             InitializeOpMapping();
         }
 
         private void InitializeOpMapping()
         {
-            operationMap = new Dictionary<char, Func<int, int, int>>()
+            intOperationMap = new Dictionary<char, Func<int, int, int>>()
             {
-                { '+', operations.Add },
-                { '-', operations.Subtract },
-                { '*', operations.Multiply },
-                { '/', operations.Divide },
+                { '+', intOps.Add },
+                { '-', intOps.Subtract },
+                { '*', intOps.Multiply },
+                { '/', intOps.Divide },
+            };
+
+            decOperationMap = new Dictionary<char, Func<decimal, decimal, decimal>>()
+            {
+                { '+', decOps.Add },
+                { '-', decOps.Subtract },
+                { '*', decOps.Multiply },
+                { '/', decOps.Divide },
             };
         }
 
@@ -39,27 +49,15 @@ namespace calculator
             TextRes.Text = eqn;
         }
 
-        private void DivideButton_Click(object sender, RoutedEventArgs e)
-        {
-            eqn += '/';
-            TextRes.Text = eqn;
-        }
+        private void DivideButton_Click(object sender, RoutedEventArgs e) => AppendOperator('/');
+        private void MultiplyButton_Click(object sender, RoutedEventArgs e) => AppendOperator('*');
+        private void SubButton_Click(object sender, RoutedEventArgs e) => AppendOperator('-');
+        private void AddButton_Click(object sender, RoutedEventArgs e) => AppendOperator('+');
+        private void DecimalButton_Click(object sender, RoutedEventArgs e) => AppendOperator('.');
 
-        private void MultiplyButton_Click(object sender, RoutedEventArgs e)
+        private void AppendOperator(char op)
         {
-            eqn += '*';
-            TextRes.Text = eqn;
-        }
-
-        private void SubButton_Click(object sender, RoutedEventArgs e)
-        {
-            eqn += '-';
-            TextRes.Text = eqn;
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            eqn += '+';
+            eqn += op;
             TextRes.Text = eqn;
         }
 
@@ -67,9 +65,9 @@ namespace calculator
         {
             try
             {
-                int result = EvaluateEquation(eqn);
-                TextRes.Text = eqn + "=" + result.ToString();
-                eqn = result.ToString(); 
+                string result = EvaluateEquation(eqn);
+                TextRes.Text = eqn + "=" + result;
+                eqn = result;
             }
             catch (Exception ex)
             {
@@ -82,25 +80,40 @@ namespace calculator
             eqn = String.Empty;
             TextRes.Clear();
         }
-        private int EvaluateEquation(string eqn)
+
+        private string EvaluateEquation(string eqn)
         {
             string[] parts = eqn.Split(new char[] { '+', '-', '*', '/' });
-            int first = Int32.Parse(parts[0]);
-            int second = Int32.Parse(parts[1]);
-            char op = eqn[parts[0].Length];
-            if (op == '/' && second == 0)
-            {
-                throw new DivideByZeroException("Division by zero not possible.");
-            }
 
-            if (operationMap.TryGetValue(op, out var operation))
+            // Detect decimal mode
+            bool isDecimal = eqn.Contains(".");
+
+            char op = eqn[parts[0].Length];
+
+            if (isDecimal)
             {
-                return operation(first, second);
+                decimal first = Decimal.Parse(parts[0]);
+                decimal second = Decimal.Parse(parts[1]);
+
+                if (op == '/' && second == 0)
+                    throw new DivideByZeroException("Division by zero not possible.");
+
+                if (decOperationMap.TryGetValue(op, out var operation))
+                    return operation(first, second).ToString();
             }
             else
             {
-                throw new InvalidOperationException("Invalid operation.");
+                int first = Int32.Parse(parts[0]);
+                int second = Int32.Parse(parts[1]);
+
+                if (op == '/' && second == 0)
+                    throw new DivideByZeroException("Division by zero not possible.");
+
+                if (intOperationMap.TryGetValue(op, out var operation))
+                    return operation(first, second).ToString();
             }
+
+            throw new InvalidOperationException("Invalid operation.");
         }
     }
 }
