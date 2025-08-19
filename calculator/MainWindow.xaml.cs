@@ -85,7 +85,6 @@ namespace calculator
         {
             string[] parts = eqn.Split(new char[] { '+', '-', '*', '/' });
 
-            // Detect decimal mode
             bool isDecimal = eqn.Contains(".");
 
             char op = eqn[parts[0].Length];
