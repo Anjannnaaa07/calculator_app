@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="420">
+        Title="MainWindow" Height="520" Width="420">
     <Grid>
-        <Grid HorizontalAlignment="Center" Height="455" Margin="0,19,0,0" VerticalAlignment="Top" Width="400">
+        <Grid HorizontalAlignment="Center" Height="475" Margin="0,19,0,0" VerticalAlignment="Top" Width="400">
             <TextBox x:Name="TextRes" HorizontalAlignment="Left" Height="81" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="362"/>
             <Button Content="1" HorizontalAlignment="Left" Height="56" Margin="10,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
             <Button Content="2" HorizontalAlignment="Left" Height="56" Margin="101,115,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
