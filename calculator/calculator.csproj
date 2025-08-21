@@ -64,7 +64,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DecimalArithematicOperations.cs" />
-    <Compile Include="IntArithmeticOperations.cs" />
     <Compile Include="IArithematicOperations.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

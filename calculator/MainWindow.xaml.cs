@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,30 +9,18 @@ namespace calculator
     public partial class MainWindow : Window
     {
         private string Equation = string.Empty;
-
-        private Dictionary<char, Func<int, int, int>> IntegerOperationMap;
         private Dictionary<char, Func<decimal, decimal, decimal>> DecimalOperationMap;
 
-        private readonly IArithematicOperations<int> IntegerOperations;
         private readonly IArithematicOperations<decimal> DecimalOperations;
         public MainWindow()
         {
             InitializeComponent();
-            IntegerOperations = new IntArithmeticOperations();
             DecimalOperations = new DecimalArithmeticOperations();
-            InitializeOpMapping();
+            InitializeOperationMapping();
         }
 
-        private void InitializeOpMapping()
+        private void InitializeOperationMapping()
         {
-            IntegerOperationMap = new Dictionary<char, Func<int, int, int>>()
-            {
-                { '+', IntegerOperations.Add },
-                { '-', IntegerOperations.Subtract },
-                { '*', IntegerOperations.Multiply },
-                { '/', IntegerOperations.Divide },
-            };
-
             DecimalOperationMap = new Dictionary<char, Func<decimal, decimal, decimal>>()
             {
                 { '+', DecimalOperations.Add },
@@ -40,7 +29,6 @@ namespace calculator
                 { '/', DecimalOperations.Divide },
             };
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button Button = (Button)sender;
@@ -79,34 +67,92 @@ namespace calculator
             Equation = String.Empty;
             TextRes.Clear();
         }
-
-        private string EvaluateEquation(string Equation)
+        private string EvaluateEquation(string equation)
         {
-            string[] parts = Equation.Split(new char[] { '+', '-', '*', '/' });
+            if (string.IsNullOrWhiteSpace(equation))
+                throw new ArgumentException("Equation cannot be empty.");
 
-            bool isDecimal = Equation.Contains(".");
-
-            char Operator = Equation[parts[0].Length];
-
-            if (isDecimal)
+            try
             {
-                decimal FirstOperand = Decimal.Parse(parts[0]);
-                decimal SecondOperand = Decimal.Parse(parts[1]);
+                // Convert to postfix (RPN)
+                var postfix = InfixToPostfix(equation);
 
+                // Evaluate postfix
+                decimal result = EvaluatePostfix(postfix);
 
-                if (DecimalOperationMap.TryGetValue(Operator, out var operation))
-                    return operation(FirstOperand, SecondOperand).ToString();
+                return result % 1 == 0 ? ((int)result).ToString() : result.ToString();
             }
-            else
+            catch (Exception ex)
             {
-                int FirstOperand = Int32.Parse(parts[0]);
-                int SecondOperand = Int32.Parse(parts[1]);
+                throw new InvalidOperationException($"Invalid equation: {ex.Message}");
+            }
+        }
+        private List<string> InfixToPostfix(string infix)
+        {
+            var output = new List<string>();
+            var operators = new Stack<char>();
+            string numberBuffer = "";
 
-                if (IntegerOperationMap.TryGetValue(Operator, out var operation))
-                    return operation(FirstOperand, SecondOperand).ToString();
+            int Precedence(char op) => (op == '+' || op == '-') ? 1 : 2;
+
+            foreach (char c in infix)
+            {
+                if (char.IsDigit(c) || c == '.')
+                {
+                    numberBuffer += c; // build number
+                }
+                else if ("+-*/".Contains(c))
+                {
+                    if (numberBuffer.Length > 0)
+                    {
+                        output.Add(numberBuffer);
+                        numberBuffer = "";
+                    }
+
+                    while (operators.Count > 0 && Precedence(operators.Peek()) >= Precedence(c))
+                    {
+                        output.Add(operators.Pop().ToString());
+                    }
+
+                    operators.Push(c);
+                }
             }
 
-            throw new InvalidOperationException("Invalid operation.");
+            if (numberBuffer.Length > 0)
+                output.Add(numberBuffer);
+
+            while (operators.Count > 0)
+                output.Add(operators.Pop().ToString());
+
+            return output;
+        }
+        private decimal EvaluatePostfix(List<string> postfix)
+        {
+            var stack = new Stack<decimal>();
+
+            foreach (var token in postfix)
+            {
+                if (decimal.TryParse(token, out decimal number))
+                {
+                    stack.Push(number);
+                }
+                else if (token.Length == 1 && "+-*/".Contains(token))
+                {
+                    decimal b = stack.Pop();
+                    decimal a = stack.Pop();
+
+                    if (!DecimalOperationMap.TryGetValue(token[0], out var op))
+                        throw new InvalidOperationException("Invalid operator.");
+
+                    stack.Push(op(a, b));
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Invalid token '{token}' in expression.");
+                }
+            }
+
+            return stack.Pop();
         }
     }
 }

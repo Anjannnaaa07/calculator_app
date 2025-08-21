@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" Width="420">
+        Title="MainWindow" Height="533" Width="461">
     <Grid>
         <Grid HorizontalAlignment="Center" Height="475" Margin="0,19,0,0" VerticalAlignment="Top" Width="400">
             <TextBox x:Name="TextRes" HorizontalAlignment="Left" Height="81" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="362"/>
@@ -25,7 +25,7 @@
             <Button x:Name="SubButton" Content="-" HorizontalAlignment="Left" Height="56" Margin="293,185,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="SubButton_Click"/>
             <Button x:Name="MultiplyButton" Content="x" HorizontalAlignment="Left" Height="56" Margin="293,255,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="MultiplyButton_Click"/>
             <Button x:Name="DivideButton" Content="/" HorizontalAlignment="Left" Height="56" Margin="293,326,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="DivideButton_Click"/>
-            <Button Content="." HorizontalAlignment="Left" Height="56" Margin="10,389,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="Button_Click"/>
+            <Button x:Name="DecimalButton" Content="." HorizontalAlignment="Left" Height="56" Margin="10,389,0,0" VerticalAlignment="Top" Width="79" RenderTransformOrigin="1.482,0.445" Click="DecimalButton_Click" />
         </Grid>
     </Grid>
 </Window>
